@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>Emily's ReactBasicPicturesViewer</title>
+    <link rel="stylesheet" href="basic.css" />
+  </head>
+
+  <body>
+
+    <h1>Basic Example</h1>
+
+    <div id="container">
+
+    </div>
+
+    <script src="react/react.js"></script>
+    <script src="react/react-dom.js"></script>
+    <script src="react/browser.min.js"></script>
+    <!-- <script src="react/react-with-addons.js"></script> -->
+    <script type="text/babel">
+    (function(){
+      // 遮盖层(with img)
+      var BlockModule = React.createClass({
+        getInitialState: function() {
+          return { ifShowStyle:this.props.ifShowStyle };
+        },
+        componentWillReceiveProps : function(nextProps){
+          this.setState( { ifShowStyle : nextProps.ifShowStyle } );
+        },
+        imgDisappearHandler : function(){
+          this.setState( { ifShowStyle:{ display: "none" } } );
+        },
+        render: function() {
+          return (
+            <div className="blockDiv" style={this.state.ifShowStyle}>
+              <ImgModule imgUrl={this.props.imgUrl}></ImgModule>
+              <div onClick={this.imgDisappearHandler}></div>
+            </div>
+          )
+        }
+      });
+
+      // 图片
+      var ImgModule = React.createClass({
+        render: function() {
+          return <img src = {this.props.imgUrl}/>;
+        }
+      });
+
+      var EventElement = React.createClass({
+        getInitialState: function() {
+          return { ifShowStyle: { display: "none" } };
+        },
+        imgEmergeHandler : function(){
+          this.setState( { ifShowStyle:{ display: "block" } } );
+        },
+        render : function(){
+          return (
+            <div>
+              <BlockModule imgUrl={this.props.imgUrl} ifShowStyle={this.state.ifShowStyle}></BlockModule>
+              <button className="imgbtn" onClick={this.imgEmergeHandler}>click To Show Image</button>
+            </div>
+          )
+        }
+      });
+
+      ReactDOM.render(
+        <EventElement imgUrl="imgs/test.jpg">click To Show Image</EventElement>,
+        document.getElementById('container')
+      );
+    })()
+    </script>
+  </body>
+
+</html>

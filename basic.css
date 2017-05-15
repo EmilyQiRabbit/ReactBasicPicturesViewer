@@ -1,0 +1,59 @@
+.blockDiv{
+	width:100%;
+	height:100%;
+	position: fixed;
+	top:0;
+	left:0;
+}
+.blockDiv div{
+	width:100%;
+	height:100%;
+	background-color: #000;
+	opacity: 0.6;
+	z-index: 3;
+	position: relative;
+}
+.blockDiv img{
+	margin: auto;
+ 	position: absolute;
+ 	top: 0; left: 0; bottom: 0; right: 0;
+	z-index: 5;
+	opacity: 1;
+	width: 300px;
+
+	-webkit-box-shadow:0 0 10px 10px #555;
+ 	-moz-box-shadow:0 0 10px 10px #555;
+ 	box-shadow:0 0 10px 10px #555;
+
+	animation: 0.5s imgEmerge cubic-bezier(.59,0,.41,1);
+	-moz-animation: 0.5s imgEmerge cubic-bezier(.59,0,.41,1);	/* Firefox */
+	-webkit-animation: 0.5s imgEmerge cubic-bezier(.59,0,.41,1);/* Safari 和 Chrome */
+	-o-animation: 0.5s imgEmerge cubic-bezier(.59,0,.41,1);
+}
+.img-btn{
+	border:1px #ccc solid;
+}
+
+@keyframes imgEmerge
+{
+	0% {width: 180px;opacity: 0}
+	100% {width: 300px;opacity: 1}
+}
+
+@-moz-keyframes imgEmerge /* Firefox */
+{
+	0% {width: 180px;opacity: 0}
+	100% {width: 300px;opacity: 1}
+}
+
+@-webkit-keyframes imgEmerge /* Safari 和 Chrome */
+{
+	0% {width: 180px;opacity: 0}
+	100% {width: 300px;opacity: 1}
+}
+
+@-o-keyframes imgEmerge /* Opera */
+{
+	0% {width: 180px;opacity: 0}
+	100% {width: 300px;opacity: 1}
+}

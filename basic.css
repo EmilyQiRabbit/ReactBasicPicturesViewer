@@ -30,10 +30,20 @@
 	-webkit-animation: 0.5s imgEmerge cubic-bezier(.59,0,.41,1);/* Safari 和 Chrome */
 	-o-animation: 0.5s imgEmerge cubic-bezier(.59,0,.41,1);
 }
-.img-btn{
-	border:1px #ccc solid;
+
+.btnclass{
+	background: #2BAEFC;
+	color:white;
+	border:0px;
+	width:150px;
+	height:30px;
 }
 
+.btnclass:hover{
+	cursor: pointer;
+}
+
+/*CSS动画*/
 @keyframes imgEmerge
 {
 	0% {width: 180px;opacity: 0}

@@ -19,34 +19,8 @@
     <!-- <script src="react/react-with-addons.js"></script> -->
     <script type="text/babel">
     (function(){
-      // 遮盖层(with img)
-      var BlockModule = React.createClass({
-        getInitialState: function() {
-          return { ifShowStyle:this.props.ifShowStyle };
-        },
-        componentWillReceiveProps : function(nextProps){
-          this.setState( { ifShowStyle : nextProps.ifShowStyle } );
-        },
-        imgDisappearHandler : function(){
-          this.setState( { ifShowStyle:{ display: "none" } } );
-        },
-        render: function() {
-          return (
-            <div className="blockDiv" style={this.state.ifShowStyle}>
-              <ImgModule imgUrl={this.props.imgUrl}></ImgModule>
-              <div onClick={this.imgDisappearHandler}></div>
-            </div>
-          )
-        }
-      });
 
-      // 图片
-      var ImgModule = React.createClass({
-        render: function() {
-          return <img src = {this.props.imgUrl}/>;
-        }
-      });
-
+      // 顶层元素
       var EventElement = React.createClass({
         getInitialState: function() {
           return { ifShowStyle: { display: "none" } };
@@ -57,15 +31,55 @@
         render : function(){
           return (
             <div>
-              <BlockModule imgUrl={this.props.imgUrl} ifShowStyle={this.state.ifShowStyle}></BlockModule>
+              <BlockModule imgUrl={this.props.imgUrl} ifShowStyle={this.state.ifShowStyle} imgClass={this.props.ElementImgClass}></BlockModule>
               <button className={this.props.ElementButtonClass} onClick={this.imgEmergeHandler}>click To Show Image</button>
             </div>
           )
         }
       });
 
+      // 遮盖层(with img)
+      var BlockModule = React.createClass({
+        getInitialState: function() {
+          return {
+            imgClass:this.props.imgClass,
+            ifShowStyle:this.props.ifShowStyle
+          };
+        },
+        componentWillReceiveProps : function(nextProps){
+          this.setState( { ifShowStyle : nextProps.ifShowStyle } );
+        },
+        imgDisappearHandler : function(){
+          // 动画
+          var imgClassCopy = this.state.imgClass;
+          this.setState( { imgClass : this.state.imgClass +  " imgDisappear"} );
+          // 消失
+          var copythis = this;
+          setTimeout(function(){
+            copythis.setState( {
+              imgClass : imgClassCopy,
+              ifShowStyle : { display: "none" } } );
+          },400);
+        },
+        render: function() {
+          return (
+            <div className="blockDiv" style={this.state.ifShowStyle}>
+              <ImgModule imgUrl={this.props.imgUrl} imgClass={this.state.imgClass}></ImgModule>
+              <div onClick={this.imgDisappearHandler.bind(this)}></div>
+            </div>
+          )
+        }
+      });
+
+      // 图片
+      var ImgModule = React.createClass({
+        render: function() {
+          return <img src = {this.props.imgUrl} className = {this.props.imgClass}/>;
+        }
+      });
+
       ReactDOM.render(
-        <EventElement imgUrl="imgs/test.jpg" ElementButtonClass="btnclass">click To Show Image</EventElement>,
+        <EventElement imgUrl="imgs/test.jpg" ElementButtonClass="btnclass" ElementImgClass="imgclass">click To Show Image</EventElement>,
         /* imgUrl：图片src ;
            ElementClass：按钮样式的类名 */
         document.getElementById('viewerContainer')

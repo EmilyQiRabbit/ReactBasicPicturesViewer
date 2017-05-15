@@ -18,7 +18,6 @@
  	position: absolute;
  	top: 0; left: 0; bottom: 0; right: 0;
 	z-index: 5;
-	opacity: 1;
 	width: 300px;
 
 	-webkit-box-shadow:0 0 10px 10px #555;
@@ -29,6 +28,10 @@
 	-moz-animation: 0.5s imgEmerge cubic-bezier(.59,0,.41,1);	/* Firefox */
 	-webkit-animation: 0.5s imgEmerge cubic-bezier(.59,0,.41,1);/* Safari 和 Chrome */
 	-o-animation: 0.5s imgEmerge cubic-bezier(.59,0,.41,1);
+}
+
+.imgclass{
+	width:390px!important;
 }
 
 .btnclass{
@@ -43,27 +46,50 @@
 	cursor: pointer;
 }
 
+.imgDisappear {
+	animation: 0.5s imgDisappear cubic-bezier(.59,0,.41,1)!important;
+	-moz-animation: 0.5s imgDisappear cubic-bezier(.59,0,.41,1)!important;/* Firefox */
+	-webkit-animation: 0.5s imgDisappear cubic-bezier(.59,0,.41,1)!important;/* Safari 和 Chrome */
+	-o-animation: 0.5s imgDisappear cubic-bezier(.59,0,.41,1)!important;
+}
+
+
+
 /*CSS动画*/
 @keyframes imgEmerge
 {
-	0% {width: 180px;opacity: 0}
-	100% {width: 300px;opacity: 1}
+	0% {opacity: 0; transform: scale(.3, .3);}
+	100% {opacity: 1}
 }
 
-@-moz-keyframes imgEmerge /* Firefox */
+@-moz-keyframes imgEmerge
 {
-	0% {width: 180px;opacity: 0}
-	100% {width: 300px;opacity: 1}
+	0% {opacity: 0; transform: scale(.3, .3);}
+	100% {opacity: 1}
+}
+@-webkit-keyframes imgEmerge
+{
+	0% {opacity: 0; -webkit-transform: scale(.3, .3);}
+	100% {opacity: 1}
 }
 
-@-webkit-keyframes imgEmerge /* Safari 和 Chrome */
+@-o-keyframes imgEmerge
 {
-	0% {width: 180px;opacity: 0}
-	100% {width: 300px;opacity: 1}
+	0% {opacity: 0; transform: scale(.3, .3);}
+	100% {opacity: 1}
 }
 
-@-o-keyframes imgEmerge /* Opera */
-{
-	0% {width: 180px;opacity: 0}
-	100% {width: 300px;opacity: 1}
+@keyframes imgDisappear {
+  from {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+    transform: scale(.3, .3);
+  }
+
+  to {
+    opacity: 0;
+  }
 }

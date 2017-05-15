@@ -19,14 +19,16 @@
     <!-- <script src="react/react-with-addons.js"></script> -->
     <script type="text/babel">
     (function(){
-
+      // private items
+      var showCssStyle = { display: "block" };
+      var hideCssStyle = { display: "none" };
       // 顶层元素
-      var EventElement = React.createClass({
+      var ImgViewerElement = React.createClass({
         getInitialState: function() {
-          return { ifShowStyle: { display: "none" } };
+          return { ifShowStyle : hideCssStyle };
         },
         imgEmergeHandler : function(){
-          this.setState( { ifShowStyle:{ display: "block" } } );
+          this.setState( { ifShowStyle : showCssStyle } );
         },
         render : function(){
           return (
@@ -58,14 +60,14 @@
           setTimeout(function(){
             copythis.setState( {
               imgClass : imgClassCopy,
-              ifShowStyle : { display: "none" } } );
+              ifShowStyle : hideCssStyle } );
           },400);
         },
         render: function() {
           return (
             <div className="blockDiv" style={this.state.ifShowStyle}>
               <ImgModule imgUrl={this.props.imgUrl} imgClass={this.state.imgClass}></ImgModule>
-              <div onClick={this.imgDisappearHandler.bind(this)}></div>
+              <div onClick={this.imgDisappearHandler}></div>
             </div>
           )
         }
@@ -73,15 +75,77 @@
 
       // 图片
       var ImgModule = React.createClass({
+
+        getImageWidth : function(callback){
+        	var img = new Image();
+        	img.src = this.props.imgUrl;
+
+        	// 如果图片被缓存，则直接返回缓存数据
+        	if(img.complete){
+            //console.log("complete");
+        	  callback(img.width, img.height);
+        	}else{
+            //console.log("reload");
+            // 完全加载完毕的事件
+        	  img.onload = function(){
+        			 callback(img.width, img.height);
+        	  }
+          }
+        },
+        imgCallbackToAdjust : function(w,h){
+          var windowW = window.innerWidth;
+          var windowH = window.innerHeight;
+          // 调整图片大小
+          if(w>windowW || h>windowH){
+            if(w>windowW && h>windowH){
+              // 大图，需要计算比例
+              if(w/h > windowW/windowH){
+                // 宽大图，需要按宽度处理
+                var oldw = w;
+                w = windowW*0.5;
+                h = windowW*0.5*h/oldw;
+                console.log("img:" + w + "," + h);
+              }else{
+                // 高大图，需要按高度处理
+                var oldh = h;
+                h = windowH*0.5;
+                w = windowH*0.5/oldh*w;
+                console.log("img:" + w + "," + h);
+              }
+            }else if(w>windowW){
+              // 长图
+              var tmpw = w;
+              w = windowW*0.5;
+              h = windowW*0.5/tmpw*h;
+            }else{
+              // 高图
+              var tmph = h;
+              h = windowH*0.5;
+              w = windowH*0.5/tmph*w;
+            }
+          }
+          //console.log("img:" + w + "," + h);
+          this.imgwidth = w;
+          this.imgheight = h;
+        },
+        imgwidth : "",
+        imgheight : "",
         render: function() {
-          return <img src = {this.props.imgUrl} className = {this.props.imgClass}/>;
+          this.getImageWidth(this.imgCallbackToAdjust);
+          return <img src = {this.props.imgUrl} className = {this.props.imgClass} width = {this.imgwidth} height = {this.imgheight}/>;
         }
       });
 
+      // 引用方式
+
       ReactDOM.render(
-        <EventElement imgUrl="imgs/test.jpg" ElementButtonClass="btnclass" ElementImgClass="imgclass">click To Show Image</EventElement>,
+        <ImgViewerElement imgUrl="imgs/test.jpg" ElementButtonClass="btnclass" ElementImgClass="imgclass">
+          <ImgModule imgUrl="imgs/test.jpg" imgClass="imgclass"></ImgModule>
+          <ImgModule imgUrl="imgs/testA.jpg" imgClass="imgclass"></ImgModule>
+        </ImgViewerElement>,
         /* imgUrl：图片src ;
-           ElementClass：按钮样式的类名 */
+           ElementButtonClass：用户自定义按钮样式的类名
+           ElementImgClass：用户自定义图片大小的类名 */
         document.getElementById('viewerContainer')
       );
     })()

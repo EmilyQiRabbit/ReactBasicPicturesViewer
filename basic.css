@@ -18,7 +18,6 @@
  	position: absolute;
  	top: 0; left: 0; bottom: 0; right: 0;
 	z-index: 5;
-	width: 300px;
 
 	-webkit-box-shadow:0 0 10px 10px #555;
  	-moz-box-shadow:0 0 10px 10px #555;
@@ -31,7 +30,7 @@
 }
 
 .imgclass{
-	width:390px!important;
+	border: 1px #000 solid;
 }
 
 .btnclass{
@@ -89,7 +88,7 @@
     transform: scale(.3, .3);
   }
 
-  to {
+  90% {
     opacity: 0;
   }
 }

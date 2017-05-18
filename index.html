@@ -35,7 +35,7 @@
         render : function(){
           return (
             <div>
-              <BlockModule imgContent={this.props.children} imgUrl={this.props.imgUrl} ifShowStyle={this.state.ifShowStyle} imgClass={this.props.ElementImgClass}></BlockModule>
+              <BlockModule imgContent={this.props.children} imgUrl={this.props.imgUrl} ifShowStyle={this.state.ifShowStyle}></BlockModule>
               <button className={this.props.ElementButtonClass} onClick={this.imgEmergeHandler}>click To Show Image</button>
             </div>
           )
@@ -44,14 +44,16 @@
 
       // 遮盖层(with img)
       var BlockModule = React.createClass({
+
         getInitialState : function() {
-          return {
+          var initState = {
             ifShowStyle:this.props.ifShowStyle,
             imgIndex:0,
             imgMaxIndex:this.props.imgContent.length,
-            imgClass:this.props.imgContent[0].props.className,
-            imgUrl:this.props.imgContent[0].props.src
-          };
+            imgIfShow:["hideImg","showImg"],
+            imgClass:""
+          }
+          return initState;
         },
         componentWillReceiveProps : function(nextProps){
           this.setState( { ifShowStyle : nextProps.ifShowStyle } );
@@ -69,7 +71,6 @@
           },400);
         },
         changeImgs : function(n){
-          console.log("changeImgsNext");
           var copythis = this;
           var newIndex = this.state.imgIndex+n;
           if(newIndex>=this.state.imgMaxIndex){
@@ -78,19 +79,20 @@
             newIndex = this.state.imgMaxIndex-1;
           }
           this.setState({imgIndex : newIndex});
-          this.props.imgContent.some(function(child,index){
-            if(index == newIndex){
-              copythis.setState({imgClass:child.props.className});
-              copythis.setState({imgUrl:child.props.src});
-              return true;
-            }
-          });
         },
         render: function() {
           var copythis = this;
           return (
             <div className="blockDiv" style={this.state.ifShowStyle}>
-              <ImgModule imgUrl={copythis.state.imgUrl} imgClass={copythis.state.imgClass}></ImgModule>
+              {
+                this.props.imgContent.map(function(child,index){
+                  var ifshow = 0;
+                  if(index == copythis.state.imgIndex){
+                    ifshow = 1;
+                  }
+                  return <ImgModule imgUrl={child.props.src} imgClass={child.props.className + " " + copythis.state.imgIfShow[ifshow] + " " + copythis.state.imgClass}></ImgModule>
+                })
+              }
               <div onClick={this.imgDisappearHandler}></div>
               <i className="fa fa-angle-right imgChange angle-right" onClick={this.changeImgs.bind(this,1)}></i>
               <i className="fa fa-angle-left imgChange angle-left" onClick={this.changeImgs.bind(this,-1)}></i>
@@ -141,22 +143,15 @@
             copythis.imgCallbackToAdjust(img, img.naturalWidth, img.naturalHeight);
           }
         },
-        componentWillUpdate : function(){
-          var img = ReactDOM.findDOMNode(this);
-          var copythis = this;
-          img.onload = function(){
-            copythis.imgCallbackToAdjust(img, img.naturalWidth, img.naturalHeight);
-          }
-        },
         render: function() {
-          return <img src = {this.props.imgUrl} className = {this.props.imgClass}/>;
+          return <img src = {this.props.imgUrl} className = {this.props.imgClass + " " + this.props.imgClass}/>;
         }
       });
 
       // 引用方式
 
       ReactDOM.render(
-        <ImgViewerElement imgUrl="imgs/testA.jpg" ElementButtonClass="btnclass" ElementImgClass="imgclass">
+        <ImgViewerElement imgUrl="imgs/testA.jpg" ElementButtonClass="btnclass">
           <img src="imgs/testA.jpg" className="imgclass"/>
           <img src="imgs/test.jpg" className="imgclass"/>
           <img src="imgs/testH.jpg" className="imgclass"/>

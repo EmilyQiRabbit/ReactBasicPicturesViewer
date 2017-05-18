@@ -55,7 +55,7 @@
 
 
 .imgclass{
-	border: 1px #000 solid;
+	border: 1px #fff solid;
 }
 
 .btnclass{
@@ -75,6 +75,13 @@
 	-moz-animation: 0.5s imgDisappear cubic-bezier(.59,0,.41,1)!important;/* Firefox */
 	-webkit-animation: 0.5s imgDisappear cubic-bezier(.59,0,.41,1)!important;/* Safari 和 Chrome */
 	-o-animation: 0.5s imgDisappear cubic-bezier(.59,0,.41,1)!important;
+}
+
+.hideImg{
+	display: none;
+}
+.showImg{
+	display: block;
 }
 
 
@@ -116,4 +123,73 @@
   90% {
     opacity: 0;
   }
+}
+/*切换动画*/
+@keyframes zoomOutRight {
+  40% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate(2000px, 0);
+    transform-origin: right center;
+  }
+}
+
+.zoomOutRight {
+  animation: 0.5s zoomOutRight linear!important;
+}
+
+@keyframes zoomOutLeft {
+  40% {
+    opacity: 1;
+    transform: scale3d(.475, .475, .475) translate3d(42px, 0, 0);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(.1) translate3d(-2000px, 0, 0);
+    transform-origin: left center;
+  }
+}
+
+.zoomOutLeft {
+  animation: 0.5s zoomOutLeft cubic-bezier(.59,0,.41,1)!important;
+}
+
+@keyframes zoomInLeft {
+  from {
+    opacity: 0;
+    transform: scale3d(.1, .1, .1) translate3d(-1000px, 0, 0);
+    animation-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale3d(.475, .475, .475) translate3d(10px, 0, 0);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+  }
+}
+
+.zoomInLeft {
+  animation: 0.5s zoomInLeft cubic-bezier(.59,0,.41,1)!important;
+}
+
+@keyframes zoomInRight {
+  from {
+    opacity: 0;
+    transform: scale3d(.1, .1, .1) translate3d(1000px, 0, 0);
+    animation-timing-function: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale3d(.475, .475, .475) translate3d(-10px, 0, 0);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.320, 1);
+  }
+}
+
+.zoomInRight {
+  animation: 0.5s zoomInRight cubic-bezier(.59,0,.41,1)!important;
 }
